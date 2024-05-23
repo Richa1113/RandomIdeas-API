@@ -2,29 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Idea = require("../models/Idea");
 
-const ideas = [
-  {
-    id: 1,
-    text: "this is idea 1",
-    tag: "Business",
-    username: "Richa",
-    date: "2022-05-18",
-  },
-  {
-    id: 2,
-    text: "this is idea 2",
-    tag: "Technnology",
-    username: "Tony",
-    date: "2022-05-11",
-  },
-  {
-    id: 3,
-    text: "this is idea 3",
-    tag: "Invention",
-    username: "Brad",
-    date: "2022-04-18",
-  },
-];
 //Get all ideas
 router.get("/", async (req, res) => {
   // res.json({ success: true, data: ideas });
