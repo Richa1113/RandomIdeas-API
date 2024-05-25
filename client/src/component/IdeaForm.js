@@ -12,32 +12,50 @@ class IdeaForm {
 
   async handleSubmit(e) {
     e.preventDefault();
+    try {
+      if (
+        !this._ideaForm.elements.text.value ||
+        !this._ideaForm.elements.tag.value ||
+        !this._ideaForm.elements.username.value
+      ) {
+        alert("Please enter all the fields");
+        return;
+      }
 
-    const idea = {
-      text: this._ideaForm.elements.text.value,
-      tag: this._ideaForm.elements.tag.value,
-      username: this._ideaForm.elements.username.value,
-    };
+      //save username local storage
+      localStorage.setItem("username", this._ideaForm.elements.username.value);
 
-    //adding new idea to the server
-    const newidea = await IdeasApi.createIdeas(idea);
-    
-    //adding idea to the list
-    this._ideaList.addIdeasToList(newidea.data.data);
+      const idea = {
+        text: this._ideaForm.elements.text.value,
+        tag: this._ideaForm.elements.tag.value,
+        username: this._ideaForm.elements.username.value,
+      };
 
-    //clear fields
-    this._ideaForm.elements.text.value = "";
-    this._ideaForm.elements.tag.value = "";
-    this._ideaForm.elements.username.value = "";
+      //adding new idea to the server
+      const newidea = await IdeasApi.createIdeas(idea);
 
-    document.dispatchEvent(new Event("closemodal"));
+      //adding idea to the list
+      this._ideaList.addIdeasToList(newidea.data.data);
+
+      //clear fields
+      this._ideaForm.elements.text.value = "";
+      this._ideaForm.elements.tag.value = "";
+      this._ideaForm.elements.username.value = "";
+      
+      //to autofill the username
+      this.render();
+
+      document.dispatchEvent(new Event("closemodal"));
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
     this._formModal.innerHTML = `<form id="idea-form">
         <div class="form-control">
           <label for="idea-text">Enter a Username</label>
-          <input type="text" name="username" id="username" />
+          <input type="text" name="username" id="username" value = "${localStorage.getItem("username")? localStorage.getItem("username") : ""}"/>
         </div>
         <div class="form-control">
           <label for="idea-text">What's Your Idea?</label>
